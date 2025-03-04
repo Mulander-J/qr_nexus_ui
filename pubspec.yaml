@@ -43,6 +43,7 @@ dependencies:
   flutter_nfc_kit: ^3.6.0
   ndef: ^0.3.4
   package_info_plus: ^8.3.0
+  shared_preferences: ^2.5.2
 
 dev_dependencies:
   flutter_test:

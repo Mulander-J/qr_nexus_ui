@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../widgets/language_switcher.dart';
@@ -29,43 +30,60 @@ class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).setting)),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Text(
+          S.of(context).setting,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        ),
+        backgroundColor: Colors.white.withAlpha(200),
+        elevation: 0,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(color: Colors.transparent),
+          ),
+        ),
+      ),
       body: ListView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 80, 16, 16),
         children: [
-          // 应用名称
-          ListTile(
-            title: Text(
-              S.of(context).appName,
-              style: const TextStyle(fontSize: 16),
-            ),
-            trailing: Text(
-              appInfo?.appName ?? "", // 替换为实际的应用名称
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+          Container(
+            color: Colors.transparent,
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text(
+                    S.of(context).appName,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  trailing: Text(
+                    appInfo?.appName ?? "",
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  title: Text(
+                    S.of(context).version,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  trailing: Text(
+                    appInfo?.version ?? "",
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  title: Text(
+                    S.of(context).lang,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  trailing: const LanguageSwitcher(),
+                ),
+              ],
             ),
           ),
-          const Divider(), // 分隔线
-          // 版本号 + 更新按钮
-          ListTile(
-            title: Text(
-              S.of(context).version,
-              style: const TextStyle(fontSize: 16),
-            ),
-            trailing: Text(
-              appInfo?.version ?? "",
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ),
-          const Divider(), // 分隔线
-          // 语言切换
-          ListTile(
-            title: Text(
-              S.of(context).lang,
-              style: const TextStyle(fontSize: 16),
-            ),
-            trailing: const LanguageSwitcher(),
-          ),
-          const Divider(), // 分隔线
         ],
       ),
     );
