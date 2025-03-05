@@ -69,8 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "pleaseEnterSsid": MessageLookupByLibrary.simpleMessage(
       "Please enter SSID",
     ),
-    "qrcodeData": MessageLookupByLibrary.simpleMessage("QRCode Data"),
-    "qrcodeView": MessageLookupByLibrary.simpleMessage("Check QRCode"),
+    "qrcodeView": MessageLookupByLibrary.simpleMessage("QR Code"),
     "setting": MessageLookupByLibrary.simpleMessage("Setting"),
     "share": MessageLookupByLibrary.simpleMessage("Share"),
     "ssid": MessageLookupByLibrary.simpleMessage("SSID"),

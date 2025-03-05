@@ -109,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             vertical: 12,
                           ),
                           title: Text(
-                            record.ssid,
+                            record.ssid.length > 16
+                                ? '${record.ssid.substring(0, 8)}...${record.ssid.substring(record.ssid.length - 8)}'
+                                : record.ssid,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,

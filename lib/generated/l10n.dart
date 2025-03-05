@@ -80,11 +80,6 @@ class S {
     );
   }
 
-  /// `QRCode Data`
-  String get qrcodeData {
-    return Intl.message('QRCode Data', name: 'qrcodeData', desc: '', args: []);
-  }
-
   /// `Copy`
   String get copy {
     return Intl.message('Copy', name: 'copy', desc: '', args: []);
@@ -95,9 +90,9 @@ class S {
     return Intl.message('NFC Write', name: 'nfcWrite', desc: '', args: []);
   }
 
-  /// `Check QRCode`
+  /// `QR Code`
   String get qrcodeView {
-    return Intl.message('Check QRCode', name: 'qrcodeView', desc: '', args: []);
+    return Intl.message('QR Code', name: 'qrcodeView', desc: '', args: []);
   }
 
   /// `Share`

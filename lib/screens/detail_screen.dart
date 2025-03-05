@@ -92,71 +92,153 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withAlpha(179),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16.0),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary.withAlpha(75),
+                    width: 2,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(26),
-                      blurRadius: 10,
-                      spreadRadius: 2,
+                      color: Colors.black.withAlpha(25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: BackdropFilter(
-                    filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                    child: Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withAlpha(51),
-                        borderRadius: BorderRadius.circular(16.0),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        20.0,
+                        20.0,
+                        20.0,
+                        20.0,
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           // SSID
-                          Text(
-                            '${S.of(context).ssid}: ${_record.ssid}',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${S.of(context).ssid}: ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _record.ssid,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.copy),
+                                color: Theme.of(context).colorScheme.primary,
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                    ClipboardData(text: _record.ssid),
+                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(S.of(context).copySuccess),
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           // Password
-                          Text(
-                            '${S.of(context).password}: ${_record.password}',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${S.of(context).password}: ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                              ),
+                              Expanded(
+                                child: Wrap(
+                                  spacing: 0,
+                                  runSpacing: 4,
+                                  crossAxisAlignment: WrapCrossAlignment.start,
+                                  children: _record.password.split('').map((char) {
+                                    Color color;
+                                    if (RegExp(r'[0-9]').hasMatch(char)) {
+                                      color = Colors.red;
+                                    } else if (RegExp(r'[a-zA-Z]').hasMatch(char)) {
+                                      color = Colors.black;
+                                    } else {
+                                      color = Colors.blue;
+                                    }
+                                    return Text(
+                                      char,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: color,
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.copy),
+                                color: Theme.of(context).colorScheme.primary,
+                                onPressed: () async {
+                                  await Clipboard.setData(
+                                    ClipboardData(text: _record.password),
+                                  );
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(S.of(context).copySuccess),
+                                        behavior: SnackBarBehavior.floating,
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           // Encryption
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withAlpha(75),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              '${S.of(context).encryption}: ${_record.encryption}',
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
+                          Row(
+                            children: [
+                              Text(
+                                '${S.of(context).encryption}: ',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
-                            ),
+                              Text(
+                                _record.encryption,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
@@ -175,64 +257,31 @@ class _DetailScreenState extends State<DetailScreen> {
             ),
           ],
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.copy),
-                    label: Text(S.of(context).copy),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () async {
-                      await Clipboard.setData(
-                        ClipboardData(text: _record.qrCodeData),
-                      );
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(S.of(context).copySuccess),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      }
-                    },
+            Expanded(
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.nfc),
+                label: Text(S.of(context).nfcWrite),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.nfc),
-                    label: Text(S.of(context).nfcWrite),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => WriteNfcWidget(data: _record.qrCodeData),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  WriteNfcWidget(data: _record.qrCodeData),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+                  );
+                },
+              ),
             ),
-            const SizedBox(height: 12),
-            SizedBox(
-              width: double.infinity,
+            const SizedBox(width: 12),
+            Expanded(
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.qr_code),
                 label: Text(S.of(context).qrcodeView),

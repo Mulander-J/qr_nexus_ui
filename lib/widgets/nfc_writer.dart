@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ndef/ndef.dart' as ndef;
 import 'package:ndef/record.dart';
 import 'package:ndef/utilities.dart';
@@ -81,23 +82,47 @@ class _WriteNfcWidgetState extends State<WriteNfcWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).nfcWrite)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SizedBox(
-          width: double.infinity,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                _status,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/nfc_icon.svg',
+                      width: 120,
+                      height: 120,
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      _status,
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _isWriting ? null : _writeNfc,
-                child: Text(S.of(context).writingStatus(_isWriting)),
+              SizedBox(
+                width: double.infinity,
+                height: 48,
+                child: ElevatedButton(
+                  onPressed: _isWriting ? null : _writeNfc,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                  ),
+                  child: Text(
+                    S.of(context).writingStatus(_isWriting),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
               ),
             ],
           ),
